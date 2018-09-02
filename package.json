@@ -1,0 +1,37 @@
+{
+  "name": "pdfgen",
+  "version": "0.0.1",
+  "description": "PDF generation service",
+  "main": "src/app.js",
+  "author": "Nathan Gaberel <nathan@gnab.fr>",
+  "license": "MIT",
+  "scripts": {
+    "build:docker": "docker build -t pdfgen:latest .",
+    "build:js": "babel src -d build",
+    "run:docker": "docker run --rm -p 8000:80 pdfgen:latest",
+    "start": "node build/app.js",
+    "test": "yarn test:format && yarn test:lint",
+    "test:format": "prettier -l \"src/**/*.js\"",
+    "test:lint": "eslint src"
+  },
+  "dependencies": {
+    "@react-pdf/node": "^0.7.6",
+    "@react-pdf/renderer": "^1.0.0-alpha.15",
+    "koa": "^2.5.2",
+    "koa-bodyparser": "^4.2.1",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.5.0",
+    "eslint-plugin-react": "^7.11.1",
+    "prettier": "^1.14.2"
+  }
+}

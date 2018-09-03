@@ -12,5 +12,7 @@ RUN yarn build:js
 FROM node:10-alpine
 WORKDIR /code
 
+EXPOSE 8000
+
 COPY --from=0 /code /code
 CMD yarn start

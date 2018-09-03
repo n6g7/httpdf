@@ -20,7 +20,8 @@
     "koa": "^2.5.2",
     "koa-bodyparser": "^4.2.1",
     "prop-types": "^15.6.2",
-    "react": "^16.4.2"
+    "react": "^16.4.2",
+    "walk": "^2.3.14"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

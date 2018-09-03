@@ -1,10 +1,13 @@
 import "@babel/polyfill"
 
+import makeDebug from "debug"
 import Koa from "koa"
 import bodyParser from "koa-bodyparser"
 
 import render from "./render"
 import buildResolver from "./resolve"
+
+const debug = makeDebug("pdfgen:app")
 
 async function app() {
   const app = new Koa()
@@ -17,6 +20,8 @@ async function app() {
       ctx.document = resolve(ctx.request.url)
       await next()
     } catch (error) {
+      debug("Can't find %o:", ctx.request.url)
+      debug(error)
       ctx.status = 404
       ctx.body = "document not found"
     }
@@ -33,6 +38,7 @@ async function app() {
       "Content-Type": "application/pdf",
     })
     ctx.response.body = await render(Component, props)
+    debug("Rendering %o", filename)
   })
 
   app.listen(80)

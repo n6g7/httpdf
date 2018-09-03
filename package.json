@@ -17,6 +17,7 @@
   "dependencies": {
     "@react-pdf/node": "^0.7.6",
     "@react-pdf/renderer": "^1.0.0-alpha.15",
+    "debug": "^3.1.0",
     "koa": "^2.5.2",
     "koa-bodyparser": "^4.2.1",
     "prop-types": "^15.6.2",

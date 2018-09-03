@@ -2,6 +2,8 @@
 FROM node:10
 WORKDIR /code
 
+ENV DEBUG pdfgen:*
+
 COPY . /code
 RUN yarn install
 RUN yarn build:js

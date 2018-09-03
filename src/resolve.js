@@ -3,7 +3,7 @@ import path from "path"
 import walk from "walk"
 
 const allowedExtensions = [".js", ".jsx"]
-const debug = makeDebug("pdfgen:resolver")
+const debug = makeDebug("httpdf:resolver")
 
 function buildResolverIndex(root) {
   debug("Indexing %o...", root)

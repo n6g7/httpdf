@@ -2,7 +2,7 @@
 FROM node:10
 WORKDIR /code
 
-ENV DEBUG pdfgen:*
+ENV DEBUG httpdf:*
 
 COPY . /code
 RUN yarn install

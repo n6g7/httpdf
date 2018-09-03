@@ -7,7 +7,7 @@ import bodyParser from "koa-bodyparser"
 import render from "./render"
 import buildResolver from "./resolve"
 
-const debug = makeDebug("pdfgen:app")
+const debug = makeDebug("httpdf:app")
 
 async function app() {
   const app = new Koa()

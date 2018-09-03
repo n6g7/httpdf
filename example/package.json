@@ -1,0 +1,20 @@
+{
+  "name": "httpdf-example",
+  "scripts": {
+    "build:docker": "docker build -t httpdf-example:latest .",
+    "build:js": "babel documents -d build",
+    "run:docker": "docker run --rm -p 8000:8000 httpdf-example:latest"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^1.0.0-alpha.15",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0"
+  }
+}

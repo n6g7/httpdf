@@ -1,0 +1,43 @@
+version: 2
+
+jobs:
+  lib:
+    working_directory: ~/httpdf
+
+    docker:
+      - image: node:10
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-{{ .Branch }}
+            - v1-master-{{ checksum "yarn.lock" }}
+            - v1-master
+
+      - run:
+          name: Install dependencies
+          command: yarn
+
+      - run:
+          name: Check lockfile is up-to-date
+          command: yarn check
+
+      - run:
+          name: Run tests
+          command: yarn test
+
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.config/yarn
+            - ~/.yarn
+            - ~/httpdf/node_modules
+
+workflows:
+  version: 2
+  stack:
+    jobs:
+      - lib

@@ -9,9 +9,13 @@ import Resolver from "./resolve"
 
 const debug = makeDebug("httpdf:app")
 
+const documentRoot = process.env.HTTPDF_DOCUMENT_ROOT
+if (!documentRoot)
+  throw Error("Document root missing, set the HTTPDF_DOCUMENT_ROOT environment variable")
+
 async function app() {
   const app = new Koa()
-  const resolver = new Resolver("./build/documents")
+  const resolver = new Resolver(documentRoot)
   await resolver.buildIndex()
 
   app.use(bodyParser())

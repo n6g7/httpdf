@@ -1,18 +1,18 @@
-# Build in full image (needs python)
-FROM node:10
+# Build base image
+FROM node:10 AS httpdf
 WORKDIR /code
 
 ENV DEBUG httpdf:*
+EXPOSE 8000
 
 COPY . /code
 RUN yarn install
 RUN yarn build:js
 
+CMD yarn start
+
 # Run in alpine image
-FROM node:10-alpine
+FROM httpdf
 WORKDIR /code
 
-EXPOSE 8000
-
-COPY --from=0 /code /code
-CMD yarn start
+ENV HTTPDF_DOCUMENT_ROOT /code/build/documents

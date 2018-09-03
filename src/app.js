@@ -5,19 +5,20 @@ import Koa from "koa"
 import bodyParser from "koa-bodyparser"
 
 import render from "./render"
-import buildResolver from "./resolve"
+import Resolver from "./resolve"
 
 const debug = makeDebug("httpdf:app")
 
 async function app() {
   const app = new Koa()
-  const resolve = await buildResolver("./build/documents")
+  const resolver = new Resolver("./build/documents")
+  await resolver.buildIndex()
 
   app.use(bodyParser())
 
   app.use(async (ctx, next) => {
     try {
-      ctx.document = resolve(ctx.request.url)
+      ctx.document = resolver.resolve(ctx.request.url)
       await next()
     } catch (error) {
       debug("Can't find %o:", ctx.request.url)

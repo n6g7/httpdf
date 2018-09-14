@@ -2,7 +2,10 @@ import axios from "axios"
 
 const createSuite = call => () => {
   it("returns a pdf", async () => {
-    const response = await call("http://localhost:8000/demo")
+    const response = await call("http://localhost:8000/demo", null, {
+      a: "a",
+      b: "b",
+    })
 
     expect(response.status).toBe(200)
     expect(response.headers["content-disposition"]).toBe('attachment; filename="demo.pdf"')
@@ -11,7 +14,10 @@ const createSuite = call => () => {
 
   it("allows customising the filename", async () => {
     const filename = "abc.pdf"
-    const response = await call("http://localhost:8000/demo", filename)
+    const response = await call("http://localhost:8000/demo", filename, {
+      a: "a",
+      b: "b",
+    })
 
     expect(response.status).toBe(200)
     expect(response.headers["content-disposition"]).toBe(`attachment; filename="${filename}"`)
@@ -38,6 +44,22 @@ const createSuite = call => () => {
     expect(response.status).toBe(200)
     expect(response.headers["content-disposition"]).toBe('attachment; filename="demo.pdf"')
     expect(response.headers["content-type"]).toBe("application/pdf")
+  })
+
+  it("returns a 400 when prop types errors", async () => {
+    expect.hasAssertions()
+
+    try {
+      await call("http://localhost:8000/demo", null, {
+        a: 1,
+      })
+    } catch (error) {
+      expect(error.response.status).toBe(400)
+      expect(error.response.data).toHaveProperty("errors")
+      expect(error.response.data.errors).toContain(
+        "The prop `b` is marked as required in `Test`, but its value is `undefined`.",
+      )
+    }
   })
 }
 

@@ -15,4 +15,4 @@ A small HTTP microservice to generate PDFs.
 - [X] Allow custom generated filenames
 - [X] Allow GET requests with query params
 - [X] Allow POST/PUT requests with body
-- [ ] Return validation errors when props don't match
+- [X] Return validation errors when props don't match

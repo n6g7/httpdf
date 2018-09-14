@@ -62,8 +62,14 @@ async function app() {
       "Content-Disposition": `attachment; filename="${filename}"`,
       "Content-Type": "application/pdf",
     })
-    ctx.response.body = await render(Component, props)
-    debug("Rendering %o", filename)
+
+    try {
+      ctx.response.body = await render(Component, props)
+      debug("Returned %o", filename)
+    } catch (errors) {
+      ctx.response.status = 400
+      ctx.response.body = { errors }
+    }
   })
 
   app.listen(8000)

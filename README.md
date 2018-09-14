@@ -1,5 +1,6 @@
 # htt*pdf*
 [![CircleCI](https://circleci.com/gh/n6g7/httpdf.svg?style=svg)](https://circleci.com/gh/n6g7/httpdf)
+[![Docker Hub](https://badgen.net/docker/pulls/n6g7/httpdf)](https://hub.docker.com/r/n6g7/httpdf/)
 
 A small HTTP microservice to generate PDFs.
 

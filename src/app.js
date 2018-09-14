@@ -22,7 +22,7 @@ async function app() {
 
   app.use(async (ctx, next) => {
     try {
-      ctx.document = resolver.resolve(ctx.request.url)
+      ctx.state.document = resolver.resolve(ctx.request.url)
       await next()
     } catch (error) {
       debug("Can't find %o:", ctx.request.url)
@@ -34,7 +34,9 @@ async function app() {
 
   app.use(async ctx => {
     const {
-      document: { filename, Component },
+      state: {
+        document: { filename, Component },
+      },
       request: { body: props },
     } = ctx
 

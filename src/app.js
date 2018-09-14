@@ -3,6 +3,7 @@ import "@babel/polyfill"
 import makeDebug from "debug"
 import Koa from "koa"
 import bodyParser from "koa-bodyparser"
+import logger from "koa-logger"
 
 import render from "./render"
 import Resolver from "./resolve"
@@ -18,6 +19,7 @@ async function app() {
   const resolver = new Resolver(documentRoot)
   await resolver.buildIndex()
 
+  app.use(logger())
   app.use(bodyParser())
 
   app.use(async (ctx, next) => {

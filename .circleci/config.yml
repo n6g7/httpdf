@@ -26,6 +26,11 @@ jobs:
           command: yarn check
 
       - run:
+          name: Run server
+          command: yarn dev
+          background: true
+
+      - run:
           name: Run tests
           command: yarn test
 

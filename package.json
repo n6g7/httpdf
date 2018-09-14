@@ -8,6 +8,7 @@
   "scripts": {
     "build:docker": "docker build -t httpdf:latest .",
     "build:js": "babel src -d build",
+    "dev": "yarn build:js && HTTPDF_DOCUMENT_ROOT=./__tests__/documents DEBUG=httpdf:* yarn start",
     "pretest": "yarn test:format && yarn test:lint",
     "start": "node build/app.js",
     "test": "yarn test:unit",
@@ -20,7 +21,7 @@
     "debug": "^3.1.0",
     "koa": "^2.5.2",
     "koa-bodyparser": "^4.2.1",
-    "react": "^16.4.2",
+    "react": "^16.5.1",
     "walk": "^2.3.14"
   },
   "devDependencies": {
@@ -29,6 +30,8 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@react-pdf/renderer": "^1.0.0-alpha.17",
+    "axios": "^0.18.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^23.6.0",

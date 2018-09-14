@@ -1,0 +1,54 @@
+import axios from "axios"
+
+const createSuite = call => () => {
+  it("returns a pdf", async () => {
+    const response = await call("http://localhost:8000/demo")
+
+    expect(response.status).toBe(200)
+    expect(response.headers["content-disposition"]).toBe('attachment; filename="demo.pdf"')
+    expect(response.headers["content-type"]).toBe("application/pdf")
+  })
+
+  it("allows customising the filename", async () => {
+    const filename = "abc.pdf"
+    const response = await call("http://localhost:8000/demo", filename)
+
+    expect(response.status).toBe(200)
+    expect(response.headers["content-disposition"]).toBe(`attachment; filename="${filename}"`)
+    expect(response.headers["content-type"]).toBe("application/pdf")
+  })
+
+  it("returns a 404 for inexistent files", async () => {
+    expect.hasAssertions()
+
+    try {
+      await call("http://localhost:8000/nope")
+    } catch (error) {
+      expect(error.response.status).toBe(404)
+      expect(error.response.data).toBe("document not found")
+    }
+  })
+}
+
+describe("httpdf", () => {
+  describe(
+    "GET",
+    createSuite((url, filename, props) =>
+      axios(url, {
+        method: "GET",
+        params: { filename, ...props },
+      }),
+    ),
+  )
+
+  describe(
+    "POST",
+    createSuite((url, filename, props) =>
+      axios(url, {
+        method: "POST",
+        params: { filename },
+        data: props,
+      }),
+    ),
+  )
+})

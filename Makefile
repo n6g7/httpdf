@@ -1,6 +1,7 @@
-LOCAL_TAG=httpdf:latest
+IMAGE_NAME=n6g7/httpdf
 VERSION=$(shell jq .version -r package.json)
-HUB_TAG=n6g7/httpdf:$(VERSION)
+LOCAL_TAG=$(IMAGE_NAME):latest
+HUB_TAG=$(IMAGE_NAME):$(VERSION)
 
 .PHONY: build tag push release
 

@@ -23,13 +23,11 @@ async function app() {
   app.use(async (ctx, next) => {
     try {
       ctx.state.document = resolver.resolve(ctx.request.url)
-      await next()
     } catch (error) {
-      debug("Can't find %o:", ctx.request.url)
-      debug(error)
-      ctx.status = 404
-      ctx.body = "document not found"
+      debug("Can't find %o", ctx.request.url)
+      ctx.throw(404, "document not found")
     }
+    await next()
   })
 
   app.use(async ctx => {

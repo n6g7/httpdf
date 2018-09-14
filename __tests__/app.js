@@ -85,6 +85,17 @@ describe("httpdf", () => {
     ),
   )
 
+  describe(
+    "PUT",
+    createSuite((url, filename, props) =>
+      axios(url, {
+        method: "PUT",
+        params: { filename },
+        data: props,
+      }),
+    ),
+  )
+
   it("returns a 405 for unsupported methods", async () => {
     expect.hasAssertions()
 

@@ -62,4 +62,18 @@ describe("httpdf", () => {
       }),
     ),
   )
+
+  it("returns a 405 for unsupported methods", async () => {
+    expect.hasAssertions()
+
+    try {
+      await axios("http://localhost:8000/demo", {
+        method: "DELETE",
+        data: {},
+      })
+    } catch (error) {
+      expect(error.response.status).toBe(405)
+      expect(error.response.data).toBe("Method Not Allowed")
+    }
+  })
 })

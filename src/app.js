@@ -22,7 +22,7 @@ async function app() {
 
   app.use(async (ctx, next) => {
     try {
-      ctx.state.document = resolver.resolve(ctx.request.url)
+      ctx.state.document = resolver.resolve(ctx.request.path)
     } catch (error) {
       debug("Can't find %o", ctx.request.url)
       ctx.throw(404, "document not found")
@@ -32,11 +32,12 @@ async function app() {
 
   app.use(async ctx => {
     const {
-      state: {
-        document: { filename, Component },
-      },
-      request: { body: props },
-    } = ctx
+      document: { filename: defaultFilename, Component },
+    } = ctx.state
+    const {
+      body: props,
+      query: { filename = defaultFilename },
+    } = ctx.request
 
     ctx.set({
       "Content-Disposition": `attachment; filename="${filename}"`,

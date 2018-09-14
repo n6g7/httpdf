@@ -7,6 +7,6 @@ EXPOSE 8000
 
 COPY . /code
 RUN yarn install
-RUN yarn build:js
+RUN yarn build
 
 CMD yarn start

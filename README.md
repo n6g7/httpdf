@@ -16,3 +16,7 @@ A small HTTP microservice to generate PDFs.
 - [X] Allow GET requests with query params
 - [X] Allow POST/PUT requests with body
 - [X] Return validation errors when props don't match
+
+## Contributing
+
+- Release: `yarn version && make release`

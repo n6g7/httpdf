@@ -1,2 +1,5 @@
 .git
+__tests__
+build
+example
 node_modules

@@ -30,12 +30,29 @@ async function app() {
     await next()
   })
 
+  app.use(async (ctx, next) => {
+    switch (ctx.method) {
+      case "GET":
+        ctx.state.props = ctx.request.query
+        break
+      case "POST":
+      case "PUT":
+        ctx.state.props = ctx.request.body
+        break
+      default:
+        debug("Can't handle method %o", ctx.method)
+        ctx.throw(405)
+    }
+
+    await next()
+  })
+
   app.use(async ctx => {
     const {
       document: { filename: defaultFilename, Component },
+      props,
     } = ctx.state
     const {
-      body: props,
       query: { filename = defaultFilename },
     } = ctx.request
 

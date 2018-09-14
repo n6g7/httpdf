@@ -1,9 +1,7 @@
 {
   "name": "httpdf-example",
   "scripts": {
-    "build:docker": "docker build -t httpdf-example:latest .",
-    "build:js": "babel documents -d build",
-    "run:docker": "docker run --rm -p 8000:8000 httpdf-example:latest"
+    "build": "babel documents -d build"
   },
   "dependencies": {
     "@react-pdf/renderer": "^1.0.0-alpha.15",

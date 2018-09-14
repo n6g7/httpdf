@@ -2,6 +2,6 @@ FROM httpdf:latest
 
 COPY . /documents
 RUN cd /documents && yarn install
-RUN cd /documents && yarn build:js
+RUN cd /documents && yarn build
 
 ENV HTTPDF_DOCUMENT_ROOT /documents/build

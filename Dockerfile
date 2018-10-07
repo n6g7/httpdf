@@ -1,6 +1,7 @@
 FROM node:10
 ENV DEBUG httpdf:*
-ENV HTTPDF_DOCUMENT_ROOT /documents
+ENV HTTPDF_DOCUMENTS_SRC /documents
+ENV HTTPDF_DOCUMENTS_DIST /code/build/documents
 WORKDIR /code
 
 COPY . /code

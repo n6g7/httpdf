@@ -10,9 +10,9 @@ import Resolver from "./resolve"
 
 const debug = makeDebug("httpdf:app")
 
-const documentRoot = process.env.HTTPDF_DOCUMENT_ROOT
+const documentRoot = process.env.HTTPDF_DOCUMENTS_DIST
 if (!documentRoot)
-  throw Error("Document root missing, set the HTTPDF_DOCUMENT_ROOT environment variable")
+  throw Error("Document root missing, set the HTTPDF_DOCUMENTS_DIST environment variable")
 
 async function app() {
   const app = new Koa()

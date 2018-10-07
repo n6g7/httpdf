@@ -1,8 +1,0 @@
-{
-  "name": "httpdf-example",
-  "dependencies": {
-    "@react-pdf/renderer": "^1.0.0-alpha.15",
-    "prop-types": "^15.6.2",
-    "react": "^16.4.2"
-  }
-}

@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  httpdf:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./documents:/documents

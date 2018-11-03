@@ -1,3 +1,4 @@
+import decache from "decache"
 import makeDebug from "debug"
 import path from "path"
 import walk from "walk"
@@ -13,7 +14,7 @@ class Resolver {
 
   buildIndex() {
     debug("Indexing %o...", this.root)
-    this.index = new Map()
+    const map = new Map()
     const walker = walk.walk(this.absoluteRoot)
 
     return new Promise((resolve, reject) => {
@@ -28,9 +29,11 @@ class Resolver {
           const trimed = path.join(relativeDir, basename)
 
           const url = `/${trimed}`
-          this.index.set(url, {
+          const requirePath = `./${path.relative(__dirname, filePath)}`
+          decache(requirePath)
+          map.set(url, {
             filename: `${basename}.pdf`,
-            Component: require("./" + path.relative(__dirname, filePath)).default,
+            Component: require(requirePath).default,
           })
 
           debug("Indexed %o (%o)", relative, url)
@@ -41,7 +44,8 @@ class Resolver {
 
       walker.on("errors", reject)
       walker.on("end", () => {
-        debug("Found %o files", this.index.size)
+        debug("Found %o files", map.size)
+        this.index = map
         resolve()
       })
     })

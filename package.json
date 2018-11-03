@@ -20,6 +20,7 @@
     "@react-pdf/node": "^0.7.6",
     "@react-pdf/renderer": "^1.0.0-alpha.18",
     "debug": "^4.0.1",
+    "decache": "^4.4.1",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
     "koa-logger": "^3.2.0",

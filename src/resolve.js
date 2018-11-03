@@ -11,7 +11,7 @@ class Resolver {
     this.absoluteRoot = path.resolve(root)
   }
 
-  async buildIndex() {
+  buildIndex() {
     debug("Indexing %o...", this.root)
     this.index = new Map()
     const walker = walk.walk(this.absoluteRoot)

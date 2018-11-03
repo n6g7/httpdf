@@ -8,7 +8,7 @@ COPY package.json /code
 COPY yarn.lock /code
 RUN yarn install
 COPY . /code
-RUN yarn build
+RUN yarn build:app
 
 EXPOSE 8000
 

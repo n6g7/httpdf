@@ -6,9 +6,9 @@
   "author": "Nathan Gaberel <nathan@gnab.fr>",
   "license": "MIT",
   "scripts": {
-    "build": "babel src --out-dir build",
+    "build:app": "babel src --out-dir build",
     "build:doc": "babel --config-file ./.babelrc",
-    "dev": "yarn build && HTTPDF_DOCUMENTS_DIST=./__tests__/documents DEBUG=httpdf:* yarn start",
+    "dev": "yarn build:app && HTTPDF_DOCUMENTS_DIST=./__tests__/documents DEBUG=httpdf:* yarn start",
     "pretest": "yarn test:format && yarn test:lint",
     "start": "node build/app.js",
     "test": "yarn test:unit",

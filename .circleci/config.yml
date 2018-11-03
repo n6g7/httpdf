@@ -1,21 +1,21 @@
 version: 2
 
 jobs:
-  lib:
+  app:
     working_directory: ~/httpdf
 
     docker:
-      - image: node:10
+      - image: circleci/node:10
 
     steps:
       - checkout
 
       - restore_cache:
           keys:
-            - v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-{{ .Branch }}
-            - v1-master-{{ checksum "yarn.lock" }}
-            - v1-master
+            - v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v2-{{ .Branch }}
+            - v2-master-{{ checksum "yarn.lock" }}
+            - v2-master
 
       - run:
           name: Install dependencies
@@ -35,14 +35,29 @@ jobs:
           command: yarn test
 
       - save_cache:
-          key: v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - ~/.config/yarn
             - ~/.yarn
             - ~/httpdf/node_modules
 
+  build:
+    working_directory: ~/httpdf
+
+    docker:
+      - image: circleci/node:10
+
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - run:
+          name: Build docker image
+          command: make build
+
 workflows:
   version: 2
   stack:
     jobs:
-      - lib
+      - app
+      - build

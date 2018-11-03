@@ -75,7 +75,7 @@ async function app() {
     }
   })
 
-  app.listen(8000)
+  app.listen(process.env.PORT)
 }
 
 app()

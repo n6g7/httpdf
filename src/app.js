@@ -10,14 +10,17 @@ import Resolver from "./resolve"
 
 const debug = makeDebug("httpdf:app")
 
-const documentRoot = process.env.HTTPDF_DOCUMENTS_DIST
-if (!documentRoot)
+const srcRoot = process.env.HTTPDF_DOCUMENTS_SRC
+if (!srcRoot)
+  throw Error("Document root missing, set the HTTPDF_DOCUMENTS_SRC environment variable")
+
+const distRoot = process.env.HTTPDF_DOCUMENTS_DIST
+if (!distRoot)
   throw Error("Document root missing, set the HTTPDF_DOCUMENTS_DIST environment variable")
 
 async function app() {
   const app = new Koa()
-  const resolver = new Resolver(documentRoot)
-  await resolver.buildIndex()
+  const resolver = new Resolver(srcRoot, distRoot)
 
   app.use(logger())
   app.use(bodyParser())

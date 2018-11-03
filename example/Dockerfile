@@ -1,4 +1,3 @@
 FROM n6g7/httpdf:latest
 
 COPY ./documents $HTTPDF_DOCUMENTS_SRC
-RUN yarn build:docs

@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src --out-dir build",
-    "build:docs": "babel $HTTPDF_DOCUMENTS_SRC --out-dir $HTTPDF_DOCUMENTS_DIST --config-file ./.babelrc",
+    "build:doc": "babel --config-file ./.babelrc",
     "dev": "yarn build && HTTPDF_DOCUMENTS_DIST=./__tests__/documents DEBUG=httpdf:* yarn start",
     "pretest": "yarn test:format && yarn test:lint",
     "start": "node build/app.js",
@@ -19,14 +19,14 @@
   "dependencies": {
     "@react-pdf/node": "^0.7.6",
     "@react-pdf/renderer": "^1.0.0-alpha.18",
+    "chokidar": "^2.0.4",
     "debug": "^4.0.1",
     "decache": "^4.4.1",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
     "koa-logger": "^3.2.0",
     "prop-types": "^15.6.2",
-    "react": "^16.5.1",
-    "walk": "^2.3.14"
+    "react": "^16.5.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

@@ -1,59 +1,83 @@
+import chokidar from "chokidar"
+import child_process from "child_process"
 import decache from "decache"
 import makeDebug from "debug"
 import path from "path"
-import walk from "walk"
 
-const allowedExtensions = [".js", ".jsx"]
 const debug = makeDebug("httpdf:resolver")
 
 class Resolver {
-  constructor(root) {
-    this.root = root
-    this.absoluteRoot = path.resolve(root)
-  }
+  allowedExtensions = ["js", "jsx"]
 
-  buildIndex() {
-    debug("Indexing %o...", this.root)
-    const map = new Map()
-    const walker = walk.walk(this.absoluteRoot)
+  constructor(srcRoot, distRoot, watch = false) {
+    this.srcRoot = path.resolve(srcRoot)
+    this.distRoot = path.resolve(distRoot)
+    this.index = new Map()
 
-    return new Promise((resolve, reject) => {
-      walker.on("file", (currenRoot, stats, next) => {
-        const extension = path.extname(stats.name)
-        const basename = path.basename(stats.name, extension)
+    this.watcher = chokidar.watch(
+      this.allowedExtensions.map(ext => `${process.env.HTTPDF_DOCUMENTS_SRC}/**/*.${ext}`),
+    )
+    this.watcher.on("add", this.fileAdded.bind(this))
+    this.watcher.on("change", this.fileChanged.bind(this))
 
-        if (allowedExtensions.includes(extension)) {
-          const filePath = path.resolve(currenRoot, stats.name)
-          const relative = path.relative(this.absoluteRoot, filePath)
-          const relativeDir = path.dirname(relative)
-          const trimed = path.join(relativeDir, basename)
-
-          const url = `/${trimed}`
-          const requirePath = `./${path.relative(__dirname, filePath)}`
-          decache(requirePath)
-          map.set(url, {
-            filename: `${basename}.pdf`,
-            Component: require(requirePath).default,
-          })
-
-          debug("Indexed %o (%o)", relative, url)
-        }
-
-        next()
-      })
-
-      walker.on("errors", reject)
-      walker.on("end", () => {
-        debug("Found %o files", map.size)
-        this.index = map
-        resolve()
-      })
-    })
+    // Stop watching after "discovery round"
+    if (!watch) this.watcher.on("ready", () => this.watcher.close())
   }
 
   resolve(key) {
     if (!this.index.has(key)) throw Error("document not found")
     return this.index.get(key)
+  }
+
+  relPath(srcPath) {
+    return path.relative(this.srcRoot, srcPath)
+  }
+
+  distPath(srcPath) {
+    return path.resolve(this.distRoot, this.relPath(srcPath))
+  }
+
+  async fileAdded(srcPath) {
+    debug("%o added", srcPath)
+    await this.buildDocument(srcPath)
+    this.indexDocument(srcPath)
+  }
+
+  async fileChanged(srcPath) {
+    debug("%o changed", srcPath)
+    await this.buildDocument(srcPath)
+    this.indexDocument(srcPath)
+  }
+
+  buildDocument(srcPath) {
+    const outDir = path.dirname(this.distPath(srcPath))
+
+    return new Promise((resolve, reject) => {
+      child_process.exec(`yarn build:doc ${srcPath} --out-dir ${outDir}`, err => {
+        if (err) reject(err)
+        else resolve()
+      })
+    }).then(() => debug("Built %o.", this.relPath(srcPath)))
+  }
+
+  indexDocument(srcPath) {
+    const relPath = this.relPath(srcPath)
+    const distPath = this.distPath(srcPath)
+    const extension = path.extname(srcPath)
+    const basename = path.basename(srcPath, extension)
+    const relativeDir = path.dirname(relPath)
+    const trimed = path.join(relativeDir, basename)
+
+    const url = `/${trimed}`
+    const requirePath = `./${path.relative(__dirname, distPath)}`
+
+    decache(requirePath)
+    this.index.set(url, {
+      filename: `${basename}.pdf`,
+      Component: require(requirePath).default,
+    })
+
+    debug("Indexed %o (at url %o)", relPath, url)
   }
 }
 

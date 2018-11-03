@@ -7,3 +7,5 @@ services:
       - "8000:8000"
     volumes:
       - ./documents:/documents
+    environment:
+      HTTPDF_WATCH: 1

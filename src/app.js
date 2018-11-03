@@ -20,7 +20,7 @@ if (!distRoot)
 
 async function app() {
   const app = new Koa()
-  const resolver = new Resolver(srcRoot, distRoot)
+  const resolver = new Resolver(srcRoot, distRoot, !!process.env.HTTPDF_WATCH)
 
   app.use(logger())
   app.use(bodyParser())

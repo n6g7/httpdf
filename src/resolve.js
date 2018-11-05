@@ -14,9 +14,7 @@ class Resolver {
     this.distRoot = path.resolve(distRoot)
     this.index = new Map()
 
-    this.watcher = chokidar.watch(
-      this.allowedExtensions.map(ext => `${this.srcRoot}/**/*.${ext}`),
-    )
+    this.watcher = chokidar.watch(this.allowedExtensions.map(ext => `${this.srcRoot}/**/*.${ext}`))
     this.watcher.on("add", this.fileAdded.bind(this))
     this.watcher.on("change", this.fileChanged.bind(this))
 

@@ -70,9 +70,13 @@ class Resolver {
     const requirePath = `./${path.relative(__dirname, distPath)}`
 
     decache(requirePath)
+    const Component = require(requirePath).default
+
+    if (!Component.document) return
+
     this.index.set(url, {
       filename: `${basename}.pdf`,
-      Component: require(requirePath).default,
+      Component,
     })
 
     debug("Indexed %o (at url %o)", relPath, url)

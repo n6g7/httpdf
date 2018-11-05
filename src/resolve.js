@@ -55,7 +55,7 @@ class Resolver {
         if (err) reject(err)
         else resolve()
       })
-    }).then(() => debug("Built %o.", this.relPath(srcPath)))
+    }).then(() => debug("Built %o", this.relPath(srcPath)))
   }
 
   indexDocument(srcPath) {

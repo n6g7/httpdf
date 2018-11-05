@@ -15,7 +15,7 @@ class Resolver {
     this.index = new Map()
 
     this.watcher = chokidar.watch(
-      this.allowedExtensions.map(ext => `${process.env.HTTPDF_DOCUMENTS_SRC}/**/*.${ext}`),
+      this.allowedExtensions.map(ext => `${this.srcRoot}/**/*.${ext}`),
     )
     this.watcher.on("add", this.fileAdded.bind(this))
     this.watcher.on("change", this.fileChanged.bind(this))

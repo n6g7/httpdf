@@ -61,6 +61,19 @@ const createSuite = call => () => {
       )
     }
   })
+
+  it("returns a 404 for non-document components", async () => {
+    expect.hasAssertions()
+
+    try {
+      await call("http://localhost:8000/Side", null, {
+        a: 1,
+      })
+    } catch (error) {
+      expect(error.response.status).toBe(404)
+      expect(error.response.data).toBe("document not found")
+    }
+  })
 }
 
 describe("httpdf", () => {

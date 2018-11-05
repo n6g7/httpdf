@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
 })
 
 export default class Test extends PureComponent {
+  static document = true
   static propTypes = {
     a: PropTypes.string.isRequired,
     b: PropTypes.string.isRequired,

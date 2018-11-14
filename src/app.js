@@ -61,13 +61,12 @@ async function app() {
       query: { filename = defaultFilename },
     } = ctx.request
 
-    ctx.set({
-      "Content-Disposition": `attachment; filename="${filename}"`,
-      "Content-Type": "application/pdf",
-    })
-
     try {
       ctx.response.body = await render(Component, props)
+      ctx.set({
+        "Content-Disposition": `attachment; filename="${filename}"`,
+        "Content-Type": "application/pdf",
+      })
       debug("Returned %o", filename)
     } catch (errors) {
       ctx.response.status = 400

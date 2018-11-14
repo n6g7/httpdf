@@ -1,12 +1,18 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
-import { Page, Document, StyleSheet } from "@react-pdf/renderer"
+import { Font } from "@react-pdf/core"
+import { Document, Page, StyleSheet } from "@react-pdf/renderer"
 
 import Side from "./Side"
+
+Font.register("/fonts/montserrat.ttf", {
+  family: "Montserrat",
+})
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: "row",
+    fontFamily: "Montserrat",
     backgroundColor: "#E4E4E4",
   },
 })

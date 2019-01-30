@@ -24,7 +24,7 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@react-pdf/node": "^0.7.6",
-    "@react-pdf/renderer": "^1.0.0-alpha.18",
+    "@react-pdf/renderer": "^1.5.6",
     "chokidar": "^2.0.4",
     "debug": "^4.0.1",
     "decache": "^4.4.1",

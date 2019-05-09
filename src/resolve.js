@@ -47,15 +47,17 @@ class Resolver {
     this.indexDocument(srcPath)
   }
 
-  buildDocument(srcPath) {
+  async buildDocument(srcPath) {
     const outDir = path.dirname(this.distPath(srcPath))
 
-    return new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       child_process.exec(`yarn build:doc ${srcPath} --out-dir ${outDir}`, err => {
         if (err) reject(err)
         else resolve()
       })
-    }).then(() => debug("Built %o", this.relPath(srcPath)))
+    })
+
+    debug("Built %o", this.relPath(srcPath))
   }
 
   indexDocument(srcPath) {

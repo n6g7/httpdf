@@ -73,6 +73,20 @@ ENV HTTPDF_WATCH 1
 COPY ./documents $HTTPDF_DOCUMENTS_SRC
 ```
 
+### Images
+
+Copy your image files anywhere on the docker image and you can use the react-pdf API to render images:
+```js
+import { Image, View } from "@react-pdf/renderer"
+
+const Component = ({ path, ...props }) =>
+  <View {...props}>
+    <Image src={`/images/${path}`} />
+  </View>
+```
+
+See [react-pdf docs](https://react-pdf.org/components#image) for the list of available props.
+
 ### Custom fonts
 
 Copy your font files anywhere on the docker image and you can use the react-pdf API to use custom fonts:

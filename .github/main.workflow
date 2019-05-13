@@ -1,7 +1,7 @@
 workflow "CI" {
   on = "push"
   resolves = [
-    "Check",
+    "Lint",
     "Test",
     "Build image",
   ]
@@ -12,7 +12,7 @@ action "Install" {
   args = "install"
 }
 
-action "Check" {
+action "Lint" {
   needs = "Install"
   uses = "Borales/actions-yarn@master"
   args = "check"
@@ -21,7 +21,7 @@ action "Check" {
 action "Test" {
   needs = "Install"
   uses = "Borales/actions-yarn@master"
-  args = "test"
+  args = "test:run"
 }
 
 action "Build image" {

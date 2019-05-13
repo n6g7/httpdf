@@ -1,12 +1,12 @@
 import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
-import { Font } from "@react-pdf/core"
-import { Document, Page, StyleSheet } from "@react-pdf/renderer"
+import { Document, Font, Page, StyleSheet } from "@react-pdf/renderer"
 
 import Side from "./Side"
 
-Font.register("/fonts/montserrat.ttf", {
+Font.register({
   family: "Montserrat",
+  src: "/fonts/montserrat.ttf",
 })
 
 const styles = StyleSheet.create({

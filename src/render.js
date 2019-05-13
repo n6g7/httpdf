@@ -1,6 +1,6 @@
 import makeDebug from "debug"
 import React from "react"
-import ReactPDF from "@react-pdf/node"
+import ReactPDF from "@react-pdf/renderer"
 
 import checkPropTypes from "./checker"
 

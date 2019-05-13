@@ -77,8 +77,7 @@ COPY ./documents $HTTPDF_DOCUMENTS_SRC
 
 Copy your font files anywhere on the docker image and you can use the react-pdf API to use custom fonts:
 ```js
-import { Font } from "@react-pdf/core"
-import { StyleSheet } from "@react-pdf/renderer"
+import { Font, StyleSheet } from "@react-pdf/renderer"
 
 Font.register("/fonts/montserrat.ttf", {
   family: "Montserrat",

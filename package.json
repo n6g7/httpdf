@@ -13,7 +13,7 @@
     "pretest": "yarn test:format && yarn test:lint",
     "start": "node build/app.js",
     "test": "yarn test:unit",
-    "test:run": "(yarn dev &) && (yarn test)",
+    "test:run": "(yarn start &) && (yarn test)",
     "test:format": "prettier -l \"src/**/*.js\"",
     "test:lint": "eslint src",
     "test:unit": "jest"

@@ -5,18 +5,11 @@ import Koa from "koa"
 import bodyParser from "koa-bodyparser"
 import logger from "koa-logger"
 
+import { srcRoot, distRoot } from "./config"
 import render from "./render"
 import Resolver from "./resolve"
 
 const debug = makeDebug("httpdf:app")
-
-const srcRoot = process.env.HTTPDF_DOCUMENTS_SRC
-if (!srcRoot)
-  throw Error("Document root missing, set the HTTPDF_DOCUMENTS_SRC environment variable")
-
-const distRoot = process.env.HTTPDF_DOCUMENTS_DIST
-if (!distRoot)
-  throw Error("Document root missing, set the HTTPDF_DOCUMENTS_DIST environment variable")
 
 async function app() {
   const app = new Koa()

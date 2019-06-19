@@ -9,10 +9,12 @@ const debug = makeDebug("httpdf:resolver")
 class Resolver {
   allowedExtensions = ["js", "jsx"]
 
-  constructor(srcRoot, distRoot, watch = false) {
+  constructor(srcRoot, distRoot, watch = false, build = false) {
     this.srcRoot = path.resolve(srcRoot)
     this.distRoot = path.resolve(distRoot)
     this.index = new Map()
+    this.watch = watch
+    this.build = build
 
     this.watcher = chokidar.watch(this.allowedExtensions.map(ext => `${this.srcRoot}/**/*.${ext}`))
     this.watcher.on("add", this.fileAdded.bind(this))
@@ -37,25 +39,27 @@ class Resolver {
 
   async fileAdded(srcPath) {
     debug("%o added", srcPath)
-    await this.buildDocument(srcPath)
+    if (this.watch || this.build) await this.buildDocument(srcPath)
     this.indexDocument(srcPath)
   }
 
   async fileChanged(srcPath) {
     debug("%o changed", srcPath)
-    await this.buildDocument(srcPath)
+    if (this.watch || this.build) await this.buildDocument(srcPath)
     this.indexDocument(srcPath)
   }
 
-  buildDocument(srcPath) {
+  async buildDocument(srcPath) {
     const outDir = path.dirname(this.distPath(srcPath))
 
-    return new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       child_process.exec(`yarn build:doc ${srcPath} --out-dir ${outDir}`, err => {
         if (err) reject(err)
         else resolve()
       })
-    }).then(() => debug("Built %o", this.relPath(srcPath)))
+    })
+
+    debug("Built %o", this.relPath(srcPath))
   }
 
   indexDocument(srcPath) {

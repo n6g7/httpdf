@@ -12,6 +12,7 @@ A small HTTP microservice to generate PDFs.
   ```Dockerfile
   FROM n6g7/httpdf:latest
   COPY ./documents $HTTPDF_DOCUMENTS_SRC
+  RUN yarn prebuild
   ```
 - Build and run:
   ```sh
@@ -71,6 +72,7 @@ Use the `HTTPDF_WATCH` environment variable while developing to watch and automa
 FROM n6g7/httpdf:latest
 ENV HTTPDF_WATCH 1
 COPY ./documents $HTTPDF_DOCUMENTS_SRC
+RUN yarn prebuild
 ```
 
 ### Images

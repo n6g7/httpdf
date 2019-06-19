@@ -9,6 +9,7 @@
     "build:app": "babel src --out-dir build",
     "build:doc": "babel --config-file ./.babelrc",
     "dev": "yarn build:app && PORT=8000 HTTPDF_DOCUMENTS_SRC=./__tests__/documents HTTPDF_DOCUMENTS_DIST=.build DEBUG=httpdf:* yarn start",
+    "prebuild": "node build/prebuild.js",
     "pretest": "yarn test:format && yarn test:lint",
     "start": "node build/app.js",
     "test": "yarn test:unit",

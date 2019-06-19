@@ -9,7 +9,7 @@ const debug = makeDebug("httpdf:resolver")
 class Resolver {
   allowedExtensions = ["js", "jsx"]
 
-  constructor(srcRoot, distRoot, watch = false, build = true) {
+  constructor(srcRoot, distRoot, watch = false, build = false) {
     this.srcRoot = path.resolve(srcRoot)
     this.distRoot = path.resolve(distRoot)
     this.index = new Map()

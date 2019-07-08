@@ -26,7 +26,7 @@
     "@babel/preset-env": "^7.5.0",
     "@babel/preset-react": "^7.0.0",
     "@react-pdf/renderer": "^1.6.3",
-    "chokidar": "^3.0.1",
+    "chokidar": "^3.0.2",
     "debug": "^4.1.1",
     "decache": "^4.5.1",
     "koa": "^2.7.0",

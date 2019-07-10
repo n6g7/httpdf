@@ -8,3 +8,10 @@ extends:
   - plugin:react/recommended
 
 parser: babel-eslint
+
+rules:
+  require-atomic-updates: off
+
+settings:
+  react:
+    version: detect

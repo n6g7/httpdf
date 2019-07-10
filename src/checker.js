@@ -16,7 +16,7 @@ function checkPropTypes(typeSpecs, values, location, componentName) {
   const errors = []
 
   for (var typeSpecName in typeSpecs) {
-    if (typeSpecs.hasOwnProperty(typeSpecName)) {
+    if (Object.prototype.hasOwnProperty.call(typeSpecs, typeSpecName)) {
       var error
       // Prop type validation may throw. In case they do, we don't want to
       // fail the render phase where it didn't fail before. So we log it.

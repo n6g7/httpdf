@@ -32,7 +32,7 @@ export default class Test extends PureComponent {
       <Document>
         <Page size="A4" style={styles.page}>
           <Side text={this.props.a}>
-            <Image src="/images/test.png" style={styles.image} />
+            <Image src="/images/test.png" style={styles.image} allowDangerousPaths="/images" />
           </Side>
           <Side text={this.props.b} />
         </Page>

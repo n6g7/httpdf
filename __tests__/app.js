@@ -119,7 +119,7 @@ describe("httpdf", () => {
       })
     } catch (error) {
       expect(error.response.status).toBe(405)
-      expect(error.response.data).toBe("Method Not Allowed")
+      expect(error.response.data).toBe("method not allowed")
     }
   })
 })

@@ -4,7 +4,7 @@
 
 A small HTTP microservice to generate PDFs.
 
-[react-pdf](https://react-pdf.org/) + [Koa](https://koajs.com/) + [Docker](https://www.docker.com/)
+[react-pdf](https://react-pdf.org/) + [Express](https://expressjs.com/) + [Docker](https://www.docker.com/)
 
 ## Getting started
 

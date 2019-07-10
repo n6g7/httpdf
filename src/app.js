@@ -1,9 +1,9 @@
 import "@babel/polyfill"
 
 import makeDebug from "debug"
-import Koa from "koa"
-import bodyParser from "koa-bodyparser"
-import logger from "koa-logger"
+import express from "express"
+import bodyParser from "body-parser"
+import morgan from "morgan"
 
 import { srcRoot, distRoot } from "./config"
 import render from "./render"
@@ -12,58 +12,59 @@ import Resolver from "./resolve"
 const debug = makeDebug("httpdf:app")
 
 async function app() {
-  const app = new Koa()
+  const app = express()
   const resolver = new Resolver(srcRoot, distRoot, !!process.env.HTTPDF_WATCH)
 
-  app.use(logger())
-  app.use(bodyParser())
+  app.use(morgan("dev"))
+  app.use(bodyParser.json())
 
-  app.use(async (ctx, next) => {
+  app.use(async (req, res, next) => {
+    req.state = {}
     try {
-      ctx.state.document = resolver.resolve(ctx.request.path)
+      req.state.document = resolver.resolve(req.path)
+      next()
     } catch (error) {
-      debug("Can't find %o", ctx.request.url)
-      ctx.throw(404, "document not found")
+      debug("Can't find %o", req.originalUrl)
+      res.status(404).send("document not found")
     }
-    await next()
   })
 
-  app.use(async (ctx, next) => {
-    switch (ctx.method) {
+  app.use(async (req, res, next) => {
+    switch (req.method) {
       case "GET":
-        ctx.state.props = ctx.request.query
+        req.state.props = req.query
+        next()
         break
       case "POST":
       case "PUT":
-        ctx.state.props = ctx.request.body
+        req.state.props = req.body
+        next()
         break
       default:
-        debug("Can't handle method %o", ctx.method)
-        ctx.throw(405)
+        debug("Can't handle method %o", req.method)
+        res.status(405).send("method not allowed")
     }
-
-    await next()
   })
 
-  app.use(async ctx => {
+  app.use(async (req, res) => {
     const {
-      document: { filename: defaultFilename, Component },
-      props,
-    } = ctx.state
-    const {
+      state: {
+        document: { filename: defaultFilename, Component },
+        props,
+      },
       query: { filename = defaultFilename },
-    } = ctx.request
+    } = req
 
     try {
-      ctx.response.body = await render(Component, props)
-      ctx.set({
+      const stream = await render(Component, props)
+      stream.pipe(res)
+      res.set({
         "Content-Disposition": `attachment; filename="${filename}"`,
         "Content-Type": "application/pdf",
       })
       debug("Returned %o", filename)
     } catch (errors) {
-      ctx.response.status = 400
-      ctx.response.body = { errors }
+      res.status(400).json({ errors })
     }
   })
 

@@ -1,0 +1,49 @@
+on: push
+name: CI
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: Borales/actions-yarn@master
+        with:
+          args: install
+      - uses: Borales/actions-yarn@master
+        with:
+          args: check
+
+  build_and_test:
+    name: Build & test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: Borales/actions-yarn@master
+        with:
+          args: install
+      - uses: Borales/actions-yarn@master
+        with:
+          args: build:app
+      - uses: Borales/actions-yarn@master
+        env:
+          HTTPDF_DOCUMENTS_DIST: .build
+          HTTPDF_DOCUMENTS_SRC: ./__tests__/documents
+        with:
+          args: prebuild
+      - uses: Borales/actions-yarn@master
+        env:
+          DEBUG: httpdf:*
+          HTTPDF_DOCUMENTS_DIST: .build
+          HTTPDF_DOCUMENTS_SRC: ./__tests__/documents
+          PORT: "8000"
+        with:
+          args: test:run
+
+  build_image:
+    name: Build docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/docker/cli@master
+        with:
+          args: build -t n6g7/httpdf:latest .

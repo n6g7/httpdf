@@ -11,9 +11,14 @@ import Resolver from "./resolve"
 
 const debug = makeDebug("httpdf:app")
 
-async function app() {
+export default async function makeApp() {
   const app = express()
-  const resolver = new Resolver(srcRoot, distRoot, !!process.env.HTTPDF_WATCH)
+  const resolver = new Resolver(srcRoot, distRoot)
+
+  if (process.env.HTTPDF_WATCH) await resolver.startWatching()
+  else await resolver.indexOnce()
+
+  debug("resolver ready")
 
   app.use(morgan("dev"))
   app.use(bodyParser.json())
@@ -68,7 +73,12 @@ async function app() {
     }
   })
 
-  app.listen(process.env.PORT)
+  return app
 }
 
-app()
+if (require.main === module) {
+  makeApp().then(app => {
+    app.listen(process.env.PORT)
+    debug("httpdf listening on %o", process.env.port)
+  })
+}

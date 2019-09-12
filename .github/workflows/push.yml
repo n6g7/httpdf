@@ -37,7 +37,7 @@ jobs:
           HTTPDF_DOCUMENTS_SRC: ./__tests__/documents
           PORT: "8000"
         with:
-          args: test:run
+          args: test
 
   build_image:
     name: Build docker image

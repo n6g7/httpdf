@@ -13,10 +13,9 @@
     "pretest": "yarn test:format && yarn test:lint",
     "start": "node build/app.js",
     "test": "yarn test:unit",
-    "test:run": "(yarn start &) && (yarn test)",
     "test:format": "prettier -l \"src/**/*.js\"",
     "test:lint": "eslint src",
-    "test:unit": "jest"
+    "test:unit": "DEBUG=httpdf:* HTTPDF_DOCUMENTS_SRC=./__tests__/documents HTTPDF_DOCUMENTS_DIST=.build jest"
   },
   "dependencies": {
     "@babel/cli": "^7.6.0",
@@ -37,6 +36,7 @@
   },
   "devDependencies": {
     "axios": "^0.19.0",
+    "axiosist": "^0.6.2",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",

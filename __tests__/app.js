@@ -1,8 +1,9 @@
-import axios from "axios"
+import axiosist from "axiosist"
+import makeApp from "../src/app"
 
 const createSuite = call => () => {
   it("returns a pdf", async () => {
-    const response = await call("http://localhost:8000/demo", null, {
+    const response = await call("/demo", null, {
       a: "a",
       b: "b",
     })
@@ -14,7 +15,7 @@ const createSuite = call => () => {
 
   it("allows customising the filename", async () => {
     const filename = "abc.pdf"
-    const response = await call("http://localhost:8000/demo", filename, {
+    const response = await call("/demo", filename, {
       a: "a",
       b: "b",
     })
@@ -27,16 +28,13 @@ const createSuite = call => () => {
   it("returns a 404 for inexistent files", async () => {
     expect.hasAssertions()
 
-    try {
-      await call("http://localhost:8000/nope")
-    } catch (error) {
-      expect(error.response.status).toBe(404)
-      expect(error.response.data).toBe("document not found")
-    }
+    const response = await call("/nope")
+    expect(response.status).toBe(404)
+    expect(response.data).toBe("document not found")
   })
 
   it("accepts props", async () => {
-    const response = await call("http://localhost:8000/demo", null, {
+    const response = await call("/demo", null, {
       a: "Hello",
       b: "World",
     })
@@ -49,34 +47,35 @@ const createSuite = call => () => {
   it("returns a 400 when prop types errors", async () => {
     expect.hasAssertions()
 
-    try {
-      await call("http://localhost:8000/demo", null, {
-        a: 1,
-      })
-    } catch (error) {
-      expect(error.response.status).toBe(400)
-      expect(error.response.data).toHaveProperty("errors")
-      expect(error.response.data.errors).toContain(
-        "The prop `b` is marked as required in `Test`, but its value is `undefined`.",
-      )
-    }
+    const response = await call("/demo", null, {
+      a: 1,
+    })
+    expect(response.status).toBe(400)
+    expect(response.data).toHaveProperty("errors")
+    expect(response.data.errors).toContain(
+      "The prop `b` is marked as required in `Test`, but its value is `undefined`.",
+    )
   })
 
   it("returns a 404 for non-document components", async () => {
     expect.hasAssertions()
 
-    try {
-      await call("http://localhost:8000/Side", null, {
-        a: 1,
-      })
-    } catch (error) {
-      expect(error.response.status).toBe(404)
-      expect(error.response.data).toBe("document not found")
-    }
+    const response = await call("/Side", null, {
+      a: 1,
+    })
+    expect(response.status).toBe(404)
+    expect(response.data).toBe("document not found")
   })
 }
 
 describe("httpdf", () => {
+  let app, axios
+
+  beforeAll(async () => {
+    app = await makeApp()
+    axios = axiosist(app)
+  })
+
   describe(
     "GET",
     createSuite((url, filename, props) =>
@@ -112,14 +111,11 @@ describe("httpdf", () => {
   it("returns a 405 for unsupported methods", async () => {
     expect.hasAssertions()
 
-    try {
-      await axios("http://localhost:8000/demo", {
-        method: "DELETE",
-        data: {},
-      })
-    } catch (error) {
-      expect(error.response.status).toBe(405)
-      expect(error.response.data).toBe("method not allowed")
-    }
+    const response = await axios("/demo", {
+      method: "DELETE",
+      data: {},
+    })
+    expect(response.status).toBe(405)
+    expect(response.data).toBe("method not allowed")
   })
 })

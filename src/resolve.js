@@ -87,7 +87,11 @@ class Resolver {
     const url = `/${trimed}`
     const requirePath = `./${path.relative(__dirname, distPath)}`
 
-    decache(requirePath)
+    try {
+      decache(requirePath)
+    } catch (err) {
+      debug("Couldn't decache(%o)", requirePath)
+    }
     const Component = require(requirePath).default
 
     if (!Component.document) return

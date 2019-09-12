@@ -8,20 +8,34 @@ const debug = makeDebug("httpdf:resolver")
 
 class Resolver {
   allowedExtensions = ["js", "jsx"]
+  watching = false
 
-  constructor(srcRoot, distRoot, watch = false, build = false) {
+  constructor(srcRoot, distRoot, build = false) {
     this.srcRoot = path.resolve(srcRoot)
     this.distRoot = path.resolve(distRoot)
     this.index = new Map()
-    this.watch = watch
-    this.build = build
+    this.currentlyBuilding = []
+    this.building = build
+  }
 
+  async startWatching(watching = true) {
     this.watcher = chokidar.watch(this.allowedExtensions.map(ext => `${this.srcRoot}/**/*.${ext}`))
-    this.watcher.on("add", this.fileAdded.bind(this))
-    this.watcher.on("change", this.fileChanged.bind(this))
+    this.watcher.on("add", path => this.currentlyBuilding.push(this.fileAdded(path)))
+    this.watcher.on("change", path => this.currentlyBuilding.push(this.fileChanged(path)))
+    this.watching = watching
 
-    // Stop watching after "discovery round"
-    if (!watch) this.watcher.on("ready", () => this.watcher.close())
+    await new Promise(resolve => this.watcher.on("ready", resolve))
+    await Promise.all(this.currentlyBuilding)
+  }
+
+  stopWatching() {
+    this.watcher.close()
+    this.watching = false
+  }
+
+  async indexOnce() {
+    await this.startWatching(false)
+    this.watcher.close()
   }
 
   resolve(key) {
@@ -39,13 +53,13 @@ class Resolver {
 
   async fileAdded(srcPath) {
     debug("%o added", srcPath)
-    if (this.watch || this.build) await this.buildDocument(srcPath)
+    if (this.watching || this.building) await this.buildDocument(srcPath)
     this.indexDocument(srcPath)
   }
 
   async fileChanged(srcPath) {
     debug("%o changed", srcPath)
-    if (this.watch || this.build) await this.buildDocument(srcPath)
+    if (this.watching || this.building) await this.buildDocument(srcPath)
     this.indexDocument(srcPath)
   }
 

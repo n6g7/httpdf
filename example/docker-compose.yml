@@ -9,3 +9,4 @@ services:
       - ./documents:/documents
     environment:
       HTTPDF_WATCH: 1
+      PORT: 80

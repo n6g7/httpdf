@@ -20,6 +20,10 @@ export default async function makeApp() {
 
   debug("resolver ready")
 
+  app.get("/health", (req, res) => {
+    res.send({ status: "pass" })
+  })
+
   app.use(morgan("dev"))
   app.use(bodyParser.json())
 

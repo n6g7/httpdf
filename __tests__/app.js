@@ -118,4 +118,10 @@ describe("httpdf", () => {
     expect(response.status).toBe(405)
     expect(response.data).toBe("method not allowed")
   })
+
+  it("returns a 200 on /health", async () => {
+    const response = await axios.get("/health")
+    expect(response.status).toBe(200)
+    expect(response.data).toEqual({ status: "pass" })
+  })
 })

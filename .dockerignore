@@ -1,4 +1,6 @@
 .git
+.github
+.vscode
 __tests__
 build
 example

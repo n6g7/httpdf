@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:12-alpine
 ENV DEBUG httpdf:*
 ENV HTTPDF_DOCUMENTS_SRC /documents
 ENV HTTPDF_DOCUMENTS_DIST /code/build/documents
@@ -7,7 +7,7 @@ WORKDIR /code
 
 COPY package.json /code
 COPY yarn.lock /code
-RUN yarn install
+RUN yarn install --production --frozen-lockfile && yarn cache clean
 COPY . /code
 RUN yarn build:app
 

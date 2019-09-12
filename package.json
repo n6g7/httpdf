@@ -1,6 +1,6 @@
 {
   "name": "httpdf",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "PDF generation over HTTP",
   "main": "src/app.js",
   "author": "Nathan Gaberel <nathan@gnab.fr>",

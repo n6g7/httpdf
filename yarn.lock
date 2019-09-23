@@ -1347,10 +1347,10 @@ axios@^0.19.0:
     follow-redirects "1.5.10"
     is-buffer "^2.0.2"
 
-axiosist@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/axiosist/-/axiosist-0.6.2.tgz#3165205df27fe1c76e0527663d7c5f20eaafb025"
-  integrity sha512-GeHqlBg/ypWQDdXccpnnEQJRYSzgzno5gY7ISRozwVM/xvi0O33Fv+VDEInhW5/KD3j7tcLeix+nsusuVINIrw==
+axiosist@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/axiosist/-/axiosist-0.7.0.tgz#23f14e2a5ff61d67fb03129f110d26c509e068f5"
+  integrity sha512-DvVfZF7gcjB9k8r/aWj1ibsukVQD5cJWApCzzeLUqssfZKJX3eO42FSdI2Y2O6HnsrLwyQvhljqVFc4FDzMW4w==
   dependencies:
     "@types/node" ">=8.9.0"
     axios "^0.19.0"

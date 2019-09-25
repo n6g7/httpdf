@@ -6,38 +6,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: Borales/actions-yarn@master
-        with:
-          args: install
-      - uses: Borales/actions-yarn@master
-        with:
-          args: check
+      - name: Install dependencies
+        run: yarn install
+      - name: Check lockfile is up to date
+        run: yarn check
 
   build_and_test:
     name: Build & test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: Borales/actions-yarn@master
-        with:
-          args: install
-      - uses: Borales/actions-yarn@master
-        with:
-          args: build:app
-      - uses: Borales/actions-yarn@master
+      - name: Install dependencies
+        run: yarn install
+      - name: Build source
+        run: yarn build:app
+      - name: Prebuild documents
+        run: yarn prebuild
         env:
           HTTPDF_DOCUMENTS_DIST: .build
           HTTPDF_DOCUMENTS_SRC: ./__tests__/documents
-        with:
-          args: prebuild
-      - uses: Borales/actions-yarn@master
+      - name: Run tests
+        run: yarn test
         env:
           DEBUG: httpdf:*
           HTTPDF_DOCUMENTS_DIST: .build
           HTTPDF_DOCUMENTS_SRC: ./__tests__/documents
           PORT: "8000"
-        with:
-          args: test
 
   build_image:
     name: Build docker image

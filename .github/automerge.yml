@@ -1,0 +1,9 @@
+rules:
+  - name: Merge dependabot PRs that pass the tests
+    conditions:
+      author: dependabot-preview[bot]
+      status:
+        value: success
+      base: master
+    actions:
+      - merge

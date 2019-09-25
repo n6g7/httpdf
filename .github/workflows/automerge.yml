@@ -1,0 +1,11 @@
+name: Automatically merge dependency updates
+on: [check_suite]
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Automatically merge PR
+        uses: Theodo-UK/actions/automerge@master
+        with:
+          github_token: "${{ secrets.GITHUB_TOKEN }}"

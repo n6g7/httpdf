@@ -1,5 +1,5 @@
 name: Debug status
-on: [status]
+on: status
 
 jobs:
   automerge:

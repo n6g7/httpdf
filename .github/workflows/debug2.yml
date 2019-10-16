@@ -1,5 +1,5 @@
 name: Debug check_run
-on: [check_run]
+on: check_run
 
 jobs:
   automerge:

@@ -1,5 +1,5 @@
 name: Debug check_suite
-on: [check_suite]
+on: check_suite
 
 jobs:
   automerge:

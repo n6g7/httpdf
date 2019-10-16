@@ -38,6 +38,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: actions/docker/cli@master
-        with:
-          args: build -t n6g7/httpdf:latest .
+      - name: Build image
+        run: docker build -t n6g7/httpdf:latest .

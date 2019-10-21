@@ -3,6 +3,7 @@ import React from "react"
 import ReactPDF from "@react-pdf/renderer"
 
 import checkPropTypes from "./checker"
+import { PropTypesError } from "./exceptions"
 
 const debug = makeDebug("httpdf:renderer")
 
@@ -15,7 +16,7 @@ export default (Component, props) => {
       propTypesErrors.length,
       "error" + (propTypesErrors.length > 1 ? "s" : ""),
     )
-    throw propTypesErrors
+    throw new PropTypesError(propTypesErrors)
   }
 
   return ReactPDF.renderToStream(<Component {...props} />)

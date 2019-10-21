@@ -8,6 +8,7 @@ import morgan from "morgan"
 import { srcRoot, distRoot } from "./config"
 import render from "./render"
 import Resolver from "./resolve"
+import { PropTypesError } from "./exceptions"
 
 const debug = makeDebug("httpdf:app")
 
@@ -72,8 +73,14 @@ export default async function makeApp() {
         "Content-Type": "application/pdf",
       })
       debug("Returned %o", filename)
-    } catch (errors) {
-      res.status(400).json({ errors })
+    } catch (error) {
+      if (error instanceof PropTypesError) {
+        debug("PropTypes errors:\n%o", error.errors)
+        res.status(400).json({ errors: error.errors })
+      } else {
+        debug(error)
+        res.status(500).send("internal server error")
+      }
     }
   })
 

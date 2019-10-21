@@ -2,7 +2,7 @@ import React, { PureComponent } from "react"
 import PropTypes from "prop-types"
 import { Page, Document, StyleSheet } from "@react-pdf/renderer"
 
-import Side from "./Side"
+import { Side } from "./components"
 
 const styles = StyleSheet.create({
   page: {

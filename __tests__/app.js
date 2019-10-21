@@ -66,6 +66,16 @@ const createSuite = call => () => {
     expect(response.status).toBe(404)
     expect(response.data).toBe("document not found")
   })
+
+  it("returns a 500 when rendering fails", async () => {
+    expect.hasAssertions()
+
+    const response = await call("/broken", null, {
+      a: 1,
+    })
+    expect(response.status).toBe(500)
+    expect(response.data).toBe("internal server error")
+  })
 }
 
 describe("httpdf", () => {

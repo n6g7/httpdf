@@ -94,7 +94,7 @@ class Resolver {
     }
     const Component = require(requirePath).default
 
-    if (!Component.document) return
+    if (!Component || !Component.document) return
 
     this.index.set(url, {
       filename: `${basename}.pdf`,

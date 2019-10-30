@@ -76,6 +76,16 @@ const createSuite = call => () => {
     expect(response.status).toBe(500)
     expect(response.data).toBe("internal server error")
   })
+
+  it("calls getAsyncProps when it is present", async () => {
+    expect.hasAssertions()
+
+    const response = await call("/asyncProps", null, {})
+
+    expect(response.status).toBe(200)
+    // When getAsyncProps is called, it sets the value of the `a` prop, which increases the file size to 1091 characters.
+    expect(response.data.length).toBe(1091)
+  })
 }
 
 describe("httpdf", () => {

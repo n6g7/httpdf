@@ -90,6 +90,6 @@ export default async function makeApp() {
 if (require.main === module) {
   makeApp().then(app => {
     app.listen(process.env.PORT)
-    debug("httpdf listening on %o", process.env.port)
+    debug("httpdf listening on %o", process.env.PORT)
   })
 }

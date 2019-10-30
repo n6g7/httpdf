@@ -110,6 +110,32 @@ const styles = StyleSheet.create({
 
 Browse the [test files](./__tests__/app.js) for a description of all the features.
 
+### Async props
+
+Perform asynchronous actions before rendering in the `getAsyncProps` static method:
+
+```js
+export default class AsyncPropsTest extends PureComponent {
+  static document = true
+
+  static async getAsyncProps(props) {
+    return {
+      result: await someAPIcall(),
+    }
+  }
+
+  render() {
+    return (
+      <Document>
+        <Page size="A4">
+          <Text>{this.props.result}</Text>
+        </Page>
+      </Document>
+    )
+  }
+}
+```
+
 ## Contributing
 
 - Release: `yarn version && make release`

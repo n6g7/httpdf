@@ -23,7 +23,7 @@
     "@babel/plugin-proposal-class-properties": "^7.7.0",
     "@babel/polyfill": "^7.7.0",
     "@babel/preset-env": "^7.7.1",
-    "@babel/preset-react": "^7.6.3",
+    "@babel/preset-react": "^7.7.0",
     "@react-pdf/renderer": "^1.6.7",
     "body-parser": "^1.19.0",
     "chokidar": "^3.3.0",

@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "axios": "^0.19.1",
-    "axiosist": "^0.7.0",
+    "axiosist": "^0.7.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",

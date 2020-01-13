@@ -18,7 +18,7 @@
     "test:unit": "DEBUG=httpdf:* HTTPDF_DOCUMENTS_SRC=./__tests__/documents HTTPDF_DOCUMENTS_DIST=.build jest"
   },
   "dependencies": {
-    "@babel/cli": "^7.7.7",
+    "@babel/cli": "^7.8.0",
     "@babel/core": "^7.8.0",
     "@babel/plugin-proposal-class-properties": "^7.8.0",
     "@babel/polyfill": "^7.7.0",

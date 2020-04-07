@@ -19,12 +19,14 @@ class Resolver {
   }
 
   async startWatching(watching = true) {
-    this.watcher = chokidar.watch(this.allowedExtensions.map(ext => `${this.srcRoot}/**/*.${ext}`))
-    this.watcher.on("add", path => this.currentlyBuilding.push(this.fileAdded(path)))
-    this.watcher.on("change", path => this.currentlyBuilding.push(this.fileChanged(path)))
+    this.watcher = chokidar.watch(
+      this.allowedExtensions.map((ext) => `${this.srcRoot}/**/*.${ext}`),
+    )
+    this.watcher.on("add", (path) => this.currentlyBuilding.push(this.fileAdded(path)))
+    this.watcher.on("change", (path) => this.currentlyBuilding.push(this.fileChanged(path)))
     this.watching = watching
 
-    await new Promise(resolve => this.watcher.on("ready", resolve))
+    await new Promise((resolve) => this.watcher.on("ready", resolve))
     await Promise.all(this.currentlyBuilding)
   }
 
@@ -67,7 +69,7 @@ class Resolver {
     const outDir = path.dirname(this.distPath(srcPath))
 
     await new Promise((resolve, reject) => {
-      child_process.exec(`yarn build:doc ${srcPath} --out-dir ${outDir}`, err => {
+      child_process.exec(`yarn build:doc ${srcPath} --out-dir ${outDir}`, (err) => {
         if (err) reject(err)
         else resolve()
       })

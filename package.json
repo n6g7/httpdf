@@ -42,7 +42,7 @@
     "babel-jest": "^26.2.2",
     "eslint": "^7.6.0",
     "eslint-plugin-react": "^7.20.5",
-    "jest": "^26.1.0",
+    "jest": "^26.2.2",
     "prettier": "^2.0.5"
   }
 }

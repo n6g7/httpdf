@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@babel/cli": "^7.11.5",
-    "@babel/core": "^7.11.4",
+    "@babel/core": "^7.11.5",
     "@babel/plugin-proposal-class-properties": "^7.10.1",
     "@babel/polyfill": "^7.11.5",
     "@babel/preset-env": "^7.11.5",

@@ -43,6 +43,6 @@
     "eslint": "^7.9.0",
     "eslint-plugin-react": "^7.20.6",
     "jest": "^26.4.2",
-    "prettier": "^2.1.1"
+    "prettier": "^2.1.2"
   }
 }

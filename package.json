@@ -24,7 +24,7 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.5",
-    "@react-pdf/renderer": "^1.6.8",
+    "@react-pdf/renderer": "^1.6.13",
     "body-parser": "^1.19.0",
     "chokidar": "^3.4.3",
     "debug": "^4.3.1",

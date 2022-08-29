@@ -1,6 +1,6 @@
 // This file is heavily influenced by https://github.com/facebook/prop-types/blob/master/checkPropTypes.js
 
-import ReactPropTypesSecret from "prop-types/lib/ReactPropTypesSecret"
+import ReactPropTypesSecret from "prop-types/lib/ReactPropTypesSecret";
 
 /**
  * Assert that the values match with the type specs.
@@ -13,11 +13,11 @@ import ReactPropTypesSecret from "prop-types/lib/ReactPropTypesSecret"
  * @private
  */
 function checkPropTypes(typeSpecs, values, location, componentName) {
-  const errors = []
+  const errors = [];
 
   for (var typeSpecName in typeSpecs) {
     if (Object.prototype.hasOwnProperty.call(typeSpecs, typeSpecName)) {
-      var error
+      var error;
       // Prop type validation may throw. In case they do, we don't want to
       // fail the render phase where it didn't fail before. So we log it.
       // After these have been cleaned up, we'll let them throw.
@@ -35,9 +35,9 @@ function checkPropTypes(typeSpecs, values, location, componentName) {
               "it must be a function, usually from the `prop-types` package, but received `" +
               typeof typeSpecs[typeSpecName] +
               "`.",
-          )
-          err.name = "Invariant Violation"
-          throw err
+          );
+          err.name = "Invariant Violation";
+          throw err;
         }
         error = typeSpecs[typeSpecName](
           values,
@@ -46,9 +46,9 @@ function checkPropTypes(typeSpecs, values, location, componentName) {
           location,
           null,
           ReactPropTypesSecret,
-        )
+        );
       } catch (ex) {
-        error = ex
+        error = ex;
       }
       if (error && !(error instanceof Error)) {
         errors.push(
@@ -64,15 +64,15 @@ function checkPropTypes(typeSpecs, values, location, componentName) {
             "You may have forgotten to pass an argument to the type checker " +
             "creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and " +
             "shape all require an argument).",
-        )
+        );
       }
       if (error instanceof Error) {
-        errors.push(error.message)
+        errors.push(error.message);
       }
     }
   }
 
-  return errors
+  return errors;
 }
 
-export default checkPropTypes
+export default checkPropTypes;

@@ -1,14 +1,12 @@
-import "@babel/polyfill";
-
 import makeDebug from "debug";
 import express from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 
-import { srcRoot, distRoot } from "./config";
-import render from "./render";
-import Resolver from "./resolve";
-import { PropTypesError } from "./exceptions";
+import { srcRoot, distRoot } from "./config.js";
+import render from "./render.js";
+import Resolver from "./resolve.js";
+import { PropTypesError } from "./exceptions.js";
 
 const debug = makeDebug("httpdf:app");
 
@@ -90,11 +88,4 @@ export default async function makeApp() {
   });
 
   return app;
-}
-
-if (require.main === module) {
-  makeApp().then((app) => {
-    app.listen(process.env.PORT);
-    debug("httpdf listening on %o", process.env.PORT);
-  });
 }

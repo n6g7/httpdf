@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Document, Font, Image, Page, StyleSheet } from "@react-pdf/renderer";
 
-import Side from "./Side";
+import Side from "./Side.js";
 
 Font.register({
   family: "Montserrat",

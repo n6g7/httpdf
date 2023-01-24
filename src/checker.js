@@ -1,6 +1,6 @@
 // This file is heavily influenced by https://github.com/facebook/prop-types/blob/master/checkPropTypes.js
 
-import ReactPropTypesSecret from "prop-types/lib/ReactPropTypesSecret";
+import ReactPropTypesSecret from "prop-types/lib/ReactPropTypesSecret.js";
 
 /**
  * Assert that the values match with the type specs.

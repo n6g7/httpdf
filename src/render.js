@@ -2,8 +2,8 @@ import makeDebug from "debug";
 import React from "react";
 import ReactPDF from "@react-pdf/renderer";
 
-import checkPropTypes from "./checker";
-import { PropTypesError } from "./exceptions";
+import checkPropTypes from "./checker.js";
+import { PropTypesError } from "./exceptions.js";
 
 const debug = makeDebug("httpdf:renderer");
 

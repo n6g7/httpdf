@@ -1,26 +1,31 @@
 import chokidar from "chokidar";
 import child_process from "child_process";
-import decache from "decache";
 import makeDebug from "debug";
 import path from "path";
 
+import { URL } from "url";
+
 const debug = makeDebug("httpdf:resolver");
 
-class Resolver {
-  allowedExtensions = ["js", "jsx"];
-  watching = false;
+const __dirname = new URL(".", import.meta.url).pathname;
 
+const allowedExtensions = ["js", "jsx"];
+
+class Resolver {
   constructor(srcRoot, distRoot, build = false) {
     this.srcRoot = path.resolve(srcRoot);
     this.distRoot = path.resolve(distRoot);
     this.index = new Map();
     this.currentlyBuilding = [];
     this.building = build;
+    this.watching = false;
+
+    this.seq = Promise.resolve();
   }
 
   async startWatching(watching = true) {
     this.watcher = chokidar.watch(
-      this.allowedExtensions.map((ext) => `${this.srcRoot}/**/*.${ext}`),
+      allowedExtensions.map((ext) => `${this.srcRoot}/**/*.${ext}`),
     );
     this.watcher.on("add", (path) =>
       this.currentlyBuilding.push(this.fileAdded(path)),
@@ -60,13 +65,13 @@ class Resolver {
   async fileAdded(srcPath) {
     debug("%o added", srcPath);
     if (this.watching || this.building) await this.buildDocument(srcPath);
-    this.indexDocument(srcPath);
+    await this.indexDocument(srcPath);
   }
 
   async fileChanged(srcPath) {
     debug("%o changed", srcPath);
     if (this.watching || this.building) await this.buildDocument(srcPath);
-    this.indexDocument(srcPath);
+    await this.indexDocument(srcPath);
   }
 
   async buildDocument(srcPath) {
@@ -85,7 +90,21 @@ class Resolver {
     debug("Built %o", this.relPath(srcPath));
   }
 
-  indexDocument(srcPath) {
+  // Two magic things happen here:
+  // - through `this.seq` we force dynamic imports to be processed _sequentially_,
+  //   this is because of https://github.com/facebook/jest/issues/11434
+  // - we append a timestamp to each import url to manually bust the module cache,
+  //   this has a nasty drawback: memory leak, cf. https://github.com/nodejs/modules/issues/307
+  async import(path) {
+    this.seq = this.seq.then(() => {
+      debug(`Importing %s`, path);
+      return import(`${path}?bust=${Date.now()}`);
+    });
+
+    return this.seq;
+  }
+
+  async indexDocument(srcPath) {
     const relPath = this.relPath(srcPath);
     const distPath = this.distPath(srcPath);
     const extension = path.extname(srcPath);
@@ -96,17 +115,12 @@ class Resolver {
     const url = `/${trimed}`;
     const requirePath = `./${path.relative(__dirname, distPath)}`;
 
-    try {
-      decache(requirePath);
-    } catch (err) {
-      debug("Couldn't decache(%o)", requirePath);
-    }
     const {
       default: Component,
       document,
       propTypes,
       getAsyncProps,
-    } = require(requirePath);
+    } = await this.import(requirePath);
 
     if (!Component || !document) return;
 

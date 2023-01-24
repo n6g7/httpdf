@@ -39,20 +39,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Generate version
-        id: version
-        run: |
-          if [ $REF_TYPE == "tag" ]
-          then
-              echo "version=$REF_NAME" >> $GITHUB_OUTPUT
-          else
-              echo "version=$SHA" >> $GITHUB_OUTPUT
-          fi
-        env:
-          REF_TYPE: ${{ github.ref_type }}
-          REF_NAME: ${{ github.ref_name }}
-          SHA: ${{ github.sha }}
-
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
@@ -60,5 +46,3 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            version=${{ steps.version.outputs.version }}

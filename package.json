@@ -10,13 +10,14 @@
     "build:app": "babel src --out-dir build",
     "build:doc": "babel --config-file ./.babelrc",
     "dev": "yarn build:app && PORT=8000 HTTPDF_DOCUMENTS_SRC=./__tests__/documents HTTPDF_DOCUMENTS_DIST=.build DEBUG=httpdf:* yarn start",
-    "prebuild": "node build/prebuild.js",
+    "prebuild": "yarn build:app && node build/prebuild.js",
     "pretest": "yarn test:format && yarn test:lint",
     "start": "node build/index.js",
     "test": "yarn test:unit",
     "test:format": "prettier -l \"src/**/*.js\"",
     "test:lint": "eslint src",
-    "test:unit": "HTTPDF_DOCUMENTS_SRC=./__tests__/documents HTTPDF_DOCUMENTS_DIST=.build yarn node --experimental-vm-modules $(yarn bin jest)"
+    "test:prebuild": "HTTPDF_DOCUMENTS_SRC=./__tests__/documents HTTPDF_DOCUMENTS_DIST=.build yarn prebuild",
+    "test:unit": "yarn test:prebuild && HTTPDF_DOCUMENTS_SRC=./__tests__/documents HTTPDF_DOCUMENTS_DIST=.build yarn node --experimental-vm-modules $(yarn bin jest)"
   },
   "dependencies": {
     "@babel/cli": "^7.20.7",

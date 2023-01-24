@@ -11,6 +11,11 @@ const __dirname = new URL(".", import.meta.url).pathname;
 
 const allowedExtensions = ["js", "jsx"];
 
+const wait = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(() => resolve(), ms);
+  });
+
 class Resolver {
   constructor(srcRoot, distRoot, build = false) {
     this.srcRoot = path.resolve(srcRoot);
@@ -86,6 +91,11 @@ class Resolver {
         },
       );
     });
+
+    // It sometimes takes a few ms before node can import a file that was just
+    // created.
+    // 💩
+    await wait(50);
 
     debug("Built %o", this.relPath(srcPath));
   }

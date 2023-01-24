@@ -118,27 +118,25 @@ Browse the [test files](./__tests__/app.js) for a description of all the feature
 
 ### Async props
 
-Perform asynchronous actions before rendering in the `getAsyncProps` static method:
+Perform asynchronous actions before rendering in the `getAsyncProps` export:
 
 ```js
-export default class AsyncPropsTest extends PureComponent {
-  static document = true;
+export default function AsyncPropsTest({ result }) {
+  return (
+    <Document>
+      <Page size="A4">
+        <Text>{result}</Text>
+      </Page>
+    </Document>
+  );
+}
 
-  static async getAsyncProps(props) {
-    return {
-      result: await someAPIcall(),
-    };
-  }
+export const document = true;
 
-  render() {
-    return (
-      <Document>
-        <Page size="A4">
-          <Text>{this.props.result}</Text>
-        </Page>
-      </Document>
-    );
-  }
+export async function getAsyncProps(props) {
+  return {
+    result: await someAPIcall(),
+  };
 }
 ```
 

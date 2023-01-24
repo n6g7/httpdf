@@ -59,14 +59,19 @@ export default async function makeApp() {
   app.use(async (req, res) => {
     const {
       state: {
-        document: { filename: defaultFilename, Component },
+        document: {
+          filename: defaultFilename,
+          Component,
+          propTypes,
+          getAsyncProps,
+        },
         props,
       },
       query: { filename = defaultFilename },
     } = req;
 
     try {
-      const stream = await render(Component, props);
+      const stream = await render(Component, props, propTypes, getAsyncProps);
       stream.pipe(res);
       res.set({
         "Content-Disposition": `attachment; filename="${filename}"`,

@@ -1,33 +1,30 @@
-import React, { PureComponent } from "react"
-import { Page, Document, StyleSheet } from "@react-pdf/renderer"
+import React from "react";
+import { Page, Document, StyleSheet } from "@react-pdf/renderer";
 
-import { Side } from "./components"
+import { Side } from "./components";
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: "row",
     backgroundColor: "#E4E4E4",
   },
-})
+});
 
-export default class AsyncPropsTest extends PureComponent {
-  static document = true
+export default function AsyncPropsTest({ a }) {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <Side text={a} />
+      </Page>
+    </Document>
+  );
+}
 
-  static async getAsyncProps(props) {
-    // Do async calls here ...
-    return {
-      ...props,
-      a: "async value",
-    }
-  }
+export const document = true;
 
-  render() {
-    return (
-      <Document>
-        <Page size="A4" style={styles.page}>
-          <Side text={this.props.a} />
-        </Page>
-      </Document>
-    )
-  }
+export async function getAsyncProps(props) {
+  return {
+    ...props,
+    a: "async value",
+  };
 }

@@ -7,9 +7,9 @@ import { PropTypesError } from "./exceptions";
 
 const debug = makeDebug("httpdf:renderer");
 
-export default async (Component, props) => {
+export default async (Component, props, propTypes, getAsyncProps) => {
   const propTypesErrors = checkPropTypes(
-    Component.propTypes,
+    propTypes,
     props,
     "prop",
     Component.name,
@@ -24,11 +24,8 @@ export default async (Component, props) => {
     throw new PropTypesError(propTypesErrors);
   }
 
-  if (
-    Component.getAsyncProps &&
-    typeof Component.getAsyncProps === "function"
-  ) {
-    const asyncProps = await Component.getAsyncProps(props);
+  if (getAsyncProps && typeof getAsyncProps === "function") {
+    const asyncProps = await getAsyncProps(props);
     props = {
       ...props,
       ...asyncProps,

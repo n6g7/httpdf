@@ -1,13 +1,13 @@
-import React, { PureComponent } from "react"
-import PropTypes from "prop-types"
-import { Document, Font, Image, Page, StyleSheet } from "@react-pdf/renderer"
+import React from "react";
+import PropTypes from "prop-types";
+import { Document, Font, Image, Page, StyleSheet } from "@react-pdf/renderer";
 
-import Side from "./Side"
+import Side from "./Side";
 
 Font.register({
   family: "Montserrat",
   src: "/fonts/montserrat.ttf",
-})
+});
 
 const styles = StyleSheet.create({
   page: {
@@ -18,25 +18,28 @@ const styles = StyleSheet.create({
   image: {
     width: "80%",
   },
-})
+});
 
-export default class Test extends PureComponent {
-  static document = true
-  static propTypes = {
-    a: PropTypes.string.isRequired,
-    b: PropTypes.string.isRequired,
-  }
-
-  render() {
-    return (
-      <Document>
-        <Page size="A4" style={styles.page}>
-          <Side text={this.props.a}>
-            <Image src="/images/test.png" style={styles.image} allowDangerousPaths="/images" />
-          </Side>
-          <Side text={this.props.b} />
-        </Page>
-      </Document>
-    )
-  }
+export default function Test({ a, b }) {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <Side text={a}>
+          <Image
+            src="/images/test.png"
+            style={styles.image}
+            allowDangerousPaths="/images"
+          />
+        </Side>
+        <Side text={b} />
+      </Page>
+    </Document>
+  );
 }
+
+export const document = true;
+
+export const propTypes = {
+  a: PropTypes.string.isRequired,
+  b: PropTypes.string.isRequired,
+};

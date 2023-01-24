@@ -101,13 +101,20 @@ class Resolver {
     } catch (err) {
       debug("Couldn't decache(%o)", requirePath);
     }
-    const Component = require(requirePath).default;
+    const {
+      default: Component,
+      document,
+      propTypes,
+      getAsyncProps,
+    } = require(requirePath);
 
-    if (!Component || !Component.document) return;
+    if (!Component || !document) return;
 
     this.index.set(url, {
       filename: `${basename}.pdf`,
       Component,
+      propTypes,
+      getAsyncProps,
     });
 
     debug("Indexed %o (at url %o)", relPath, url);

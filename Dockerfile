@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:18-alpine
 ENV DEBUG httpdf:*
 ENV HTTPDF_DOCUMENTS_SRC /documents
 ENV HTTPDF_DOCUMENTS_DIST /code/build/documents

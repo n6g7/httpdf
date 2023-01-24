@@ -1,100 +1,106 @@
-import axiosist from "axiosist"
-import makeApp from "../src/app"
+import axiosist from "axiosist";
+import makeApp from "../src/app";
 
-const createSuite = call => () => {
+const createSuite = (call) => () => {
   it("returns a pdf", async () => {
     const response = await call("/demo", null, {
       a: "a",
       b: "b",
-    })
+    });
 
-    expect(response.status).toBe(200)
-    expect(response.headers["content-disposition"]).toBe('attachment; filename="demo.pdf"')
-    expect(response.headers["content-type"]).toBe("application/pdf")
-  })
+    expect(response.status).toBe(200);
+    expect(response.headers["content-disposition"]).toBe(
+      'attachment; filename="demo.pdf"',
+    );
+    expect(response.headers["content-type"]).toBe("application/pdf");
+  });
 
   it("allows customising the filename", async () => {
-    const filename = "abc.pdf"
+    const filename = "abc.pdf";
     const response = await call("/demo", filename, {
       a: "a",
       b: "b",
-    })
+    });
 
-    expect(response.status).toBe(200)
-    expect(response.headers["content-disposition"]).toBe(`attachment; filename="${filename}"`)
-    expect(response.headers["content-type"]).toBe("application/pdf")
-  })
+    expect(response.status).toBe(200);
+    expect(response.headers["content-disposition"]).toBe(
+      `attachment; filename="${filename}"`,
+    );
+    expect(response.headers["content-type"]).toBe("application/pdf");
+  });
 
   it("returns a 404 for inexistent files", async () => {
-    expect.hasAssertions()
+    expect.hasAssertions();
 
-    const response = await call("/nope")
-    expect(response.status).toBe(404)
-    expect(response.data).toBe("document not found")
-  })
+    const response = await call("/nope");
+    expect(response.status).toBe(404);
+    expect(response.data).toBe("document not found");
+  });
 
   it("accepts props", async () => {
     const response = await call("/demo", null, {
       a: "Hello",
       b: "World",
-    })
+    });
 
-    expect(response.status).toBe(200)
-    expect(response.headers["content-disposition"]).toBe('attachment; filename="demo.pdf"')
-    expect(response.headers["content-type"]).toBe("application/pdf")
-  })
+    expect(response.status).toBe(200);
+    expect(response.headers["content-disposition"]).toBe(
+      'attachment; filename="demo.pdf"',
+    );
+    expect(response.headers["content-type"]).toBe("application/pdf");
+  });
 
   it("returns a 400 when prop types errors", async () => {
-    expect.hasAssertions()
+    expect.hasAssertions();
 
     const response = await call("/demo", null, {
       a: 1,
-    })
-    expect(response.status).toBe(400)
-    expect(response.data).toHaveProperty("errors")
+    });
+    expect(response.status).toBe(400);
+    expect(response.data).toHaveProperty("errors");
     expect(response.data.errors).toContain(
       "The prop `b` is marked as required in `Test`, but its value is `undefined`.",
-    )
-  })
+    );
+  });
 
   it("returns a 404 for non-document components", async () => {
-    expect.hasAssertions()
+    expect.hasAssertions();
 
     const response = await call("/Side", null, {
       a: 1,
-    })
-    expect(response.status).toBe(404)
-    expect(response.data).toBe("document not found")
-  })
+    });
+    expect(response.status).toBe(404);
+    expect(response.data).toBe("document not found");
+  });
 
   it("returns a 500 when rendering fails", async () => {
-    expect.hasAssertions()
+    expect.hasAssertions();
 
     const response = await call("/broken", null, {
       a: 1,
-    })
-    expect(response.status).toBe(500)
-    expect(response.data).toBe("internal server error")
-  })
+    });
+    expect(response.status).toBe(500);
+    expect(response.data).toBe("internal server error");
+  });
 
   it("calls getAsyncProps when it is present", async () => {
-    expect.hasAssertions()
+    expect.hasAssertions();
 
-    const response = await call("/asyncProps", null, {})
+    const response = await call("/asyncProps", null, {});
 
-    expect(response.status).toBe(200)
-    // When getAsyncProps is called, it sets the value of the `a` prop, which increases the file size to 1173 characters.
-    expect(response.data.length).toBe(1173)
-  })
-}
+    // When getAsyncProps is called, it sets the value of the `a` prop.
+    // If it wasn't called, the prop would be missing and we'd get a 400.
+    expect(response.status).toBe(200);
+  });
+};
 
 describe("httpdf", () => {
-  let app, axios
+  let app, axios;
 
   beforeAll(async () => {
-    app = await makeApp()
-    axios = axiosist(app)
-  })
+    app = await makeApp();
+    axios = axiosist(app);
+  });
 
   describe(
     "GET",
@@ -104,7 +110,7 @@ describe("httpdf", () => {
         params: { filename, ...props },
       }),
     ),
-  )
+  );
 
   describe(
     "POST",
@@ -115,7 +121,7 @@ describe("httpdf", () => {
         data: props,
       }),
     ),
-  )
+  );
 
   describe(
     "PUT",
@@ -126,22 +132,22 @@ describe("httpdf", () => {
         data: props,
       }),
     ),
-  )
+  );
 
   it("returns a 405 for unsupported methods", async () => {
-    expect.hasAssertions()
+    expect.hasAssertions();
 
     const response = await axios("/demo", {
       method: "DELETE",
       data: {},
-    })
-    expect(response.status).toBe(405)
-    expect(response.data).toBe("method not allowed")
-  })
+    });
+    expect(response.status).toBe(405);
+    expect(response.data).toBe("method not allowed");
+  });
 
   it("returns a 200 on /health", async () => {
-    const response = await axios.get("/health")
-    expect(response.status).toBe(200)
-    expect(response.data).toEqual({ status: "pass" })
-  })
-})
+    const response = await axios.get("/health");
+    expect(response.status).toBe(200);
+    expect(response.data).toEqual({ status: "pass" });
+  });
+});

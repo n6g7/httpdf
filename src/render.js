@@ -8,6 +8,14 @@ import { PropTypesError } from "./exceptions";
 const debug = makeDebug("httpdf:renderer");
 
 export default async (Component, props, propTypes, getAsyncProps) => {
+  if (getAsyncProps && typeof getAsyncProps === "function") {
+    const asyncProps = await getAsyncProps(props);
+    props = {
+      ...props,
+      ...asyncProps,
+    };
+  }
+
   const propTypesErrors = checkPropTypes(
     propTypes,
     props,
@@ -22,14 +30,6 @@ export default async (Component, props, propTypes, getAsyncProps) => {
       "error" + (propTypesErrors.length > 1 ? "s" : ""),
     );
     throw new PropTypesError(propTypesErrors);
-  }
-
-  if (getAsyncProps && typeof getAsyncProps === "function") {
-    const asyncProps = await getAsyncProps(props);
-    props = {
-      ...props,
-      ...asyncProps,
-    };
   }
 
   return ReactPDF.renderToStream(<Component {...props} />);

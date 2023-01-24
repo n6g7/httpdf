@@ -1,8 +1,0 @@
-name: Debug check_suite
-on: check_suite
-
-jobs:
-  automerge:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo check_suite

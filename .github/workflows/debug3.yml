@@ -1,8 +1,0 @@
-name: Debug status
-on: status
-
-jobs:
-  automerge:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo status
